@@ -14,10 +14,15 @@ addons:
       - g++-6
       - libboost-python-dev
       - libpython2.7-dev
+install:
+  - mkdir .tmp
+  - curl -L https://github.com/ninja-build/ninja/releases/download/v1.7.2/ninja-linux.zip -o .tmp/ninja-linux.zip
+  - unzip .tmp/ninja-linux.zip -d .tmp
 before_script:  
+  - export PATH=$PATH:$PWD/.tmp
   - mkdir build
   - cd build
   - cmake --version && g++-6 --version
-  - cmake ..
+  - cmake -GNinja ..
 script:
-  - make
+  - ninja -v
