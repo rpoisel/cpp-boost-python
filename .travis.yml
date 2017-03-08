@@ -1,0 +1,23 @@
+language:
+  - cpp
+compiler:
+  - g++-6
+dist: trusty
+sudo: required
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - cmake
+      - gcc-6
+      - g++-6
+      - libboost-python-dev
+      - libpython2.7-dev
+before_script:  
+  - mkdir build
+  - cd build
+  - cmake --version && g++-6 --version
+  - cmake ..
+script:
+  - make
