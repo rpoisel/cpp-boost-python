@@ -1,12 +1,29 @@
+#include "mymodule.h"
+
 #include <boost/python.hpp>
 
-char const* yay()
-{
-    return "hello, world";
-}
+#include <cstdlib>
 
-BOOST_PYTHON_MODULE(libyay)
+using namespace boost::python;
+
+int main(void)
 {
-    using namespace boost::python;
-    def("yay", yay);
+    try
+    {
+	::setenv("PYTHONPATH", ".", 1);
+
+	Py_Initialize();
+
+	object main_module = import("__main__");
+	dict main_namespace = extract<dict>(main_module.attr("__dict__"));
+	object embedding = import("embedding");
+	object myfunc = embedding.attr("myfunc");
+	myfunc("R2D2");
+    }
+    catch (error_already_set& e)
+    {
+	PyErr_PrintEx(0);
+	return 1;
+    }
+    return 0;
 }
